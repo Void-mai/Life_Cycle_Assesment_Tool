@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Hide any potential watermarks */
+[data-bolt-watermark],
+.bolt-watermark,
+div[style*="position: fixed"][style*="bottom"],
+div[style*="position: absolute"][style*="bottom"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Additional watermark hiding rules */
+body::after,
+body::before,
+html::after,
+html::before {
+  display: none !important;
+}
+
+/* Hide elements that might contain watermarks */
+div[class*="watermark"],
+div[id*="watermark"],
+div[class*="bolt"],
+div[id*="bolt"] {
+  display: none !important;
+}
