@@ -1,12 +1,13 @@
 import React from 'react';
-import { Recycle } from 'lucide-react';
-import { CircularityMetrics } from '../types';
+import { Recycle, Zap } from 'lucide-react';
+import { CircularityMetrics, EnvironmentalImpacts } from '../types';
 
 interface MetricsCardsProps {
   metrics: CircularityMetrics;
+  environmentalImpacts: EnvironmentalImpacts;
 }
 
-const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics }) => {
+const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics, environmentalImpacts }) => {
   const cards = [
     {
       title: 'Circularity Score',
@@ -15,6 +16,14 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics }) => {
       icon: Recycle,
       color: 'blue',
       description: 'Overall circular economy performance'
+    },
+    {
+      title: 'Carbon Emissions',
+      value: environmentalImpacts.carbonFootprint,
+      unit: 'kg CO₂e',
+      icon: Zap,
+      color: 'green',
+      description: 'Carbon footprint per unit mass'
     }
   ];
 

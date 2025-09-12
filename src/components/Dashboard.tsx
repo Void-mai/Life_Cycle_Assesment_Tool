@@ -42,7 +42,10 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onBack }) => {
         </div>
 
         {/* Metrics Cards */}
-        <MetricsCards metrics={data.circularityMetrics} />
+        <MetricsCards 
+          metrics={data.circularityMetrics} 
+          environmentalImpacts={data.environmentalImpacts}
+        />
 
         {/* Carbon Footprint Chart */}
         <div className="mb-8">
@@ -86,12 +89,6 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onBack }) => {
             <div>
               <span className="font-medium text-gray-700">Route:</span>
               <span className="ml-2 text-gray-600">{data.scenario.split(' ')[0]}</span>
-            </div>
-            <div>
-              <span className="font-medium text-gray-700">Carbon Reduction:</span>
-              <span className="ml-2 text-green-600 font-medium">
-                {(((data.baselineImpacts.carbonFootprint - data.environmentalImpacts.carbonFootprint) / data.baselineImpacts.carbonFootprint) * 100).toFixed(1)}%
-              </span>
             </div>
             <div>
               <span className="font-medium text-gray-700">Circularity Score:</span>

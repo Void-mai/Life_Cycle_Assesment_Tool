@@ -28,15 +28,11 @@ const BarChart: React.FC<BarChartProps> = ({ userImpacts, baselineImpacts, scena
         {data.map((item) => {
           const userPercentage = (item.user / maxValue) * 100;
           const baselinePercentage = (item.baseline / maxValue) * 100;
-          const reduction = ((item.baseline - item.user) / item.baseline * 100).toFixed(1);
           
           return (
             <div key={item.category} className="space-y-3">
               <div className="flex justify-between items-center">
                 <h4 className="font-semibold text-gray-700">{item.category}</h4>
-                <span className="text-sm text-green-600 font-medium">
-                  {reduction}% reduction
-                </span>
               </div>
               
               <div className="space-y-2">
