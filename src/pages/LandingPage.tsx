@@ -64,13 +64,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             <div className="mt-16 relative">
               <div className="relative mx-auto max-w-5xl">
                 <img
-                  src="https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600"
-                  alt="Mining operations and industrial site"
+                  src="https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600"
+                  alt="Open pit mining operations"
                   className="w-full h-64 md:h-80 object-cover rounded-2xl shadow-2xl opacity-80"
                   loading="lazy"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = "https://images.pexels.com/photos/162568/steel-mill-factory-industry-162568.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600";
+                    target.src = "https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600";
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent rounded-2xl" />
