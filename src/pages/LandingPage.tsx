@@ -64,9 +64,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             <div className="mt-16 relative">
               <div className="relative mx-auto max-w-5xl">
                 <img
-                  src="https://images.pexels.com/photos/162568/steel-mill-factory-industry-162568.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                  src="https://images.pexels.com/photos/162568/steel-mill-factory-industry-162568.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600"
                   alt="Industrial steel mill facility"
                   className="w-full h-64 md:h-80 object-cover rounded-2xl shadow-2xl opacity-80"
+                  loading="lazy"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600";
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent rounded-2xl" />
               </div>
@@ -144,9 +149,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             </div>
             <div className="relative">
               <img
-                src="https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                src="https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600"
                 alt="Mining and industrial operations"
                 className="w-full h-80 object-cover rounded-2xl shadow-2xl"
+                loading="lazy"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "https://images.pexels.com/photos/162568/steel-mill-factory-industry-162568.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600";
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent rounded-2xl" />
             </div>
