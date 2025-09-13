@@ -5,7 +5,7 @@ Thank you for your interest in contributing to the LCA Platform! This document p
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/yourusername/lca-platform.git`
+2. Clone your fork: `git clone https://github.com/Void-mai/Life_Cycle_Assesment_Tool`
 3. Install dependencies: `npm install`
 4. Start development server: `npm run dev`
 
