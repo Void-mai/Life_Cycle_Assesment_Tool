@@ -2,10 +2,10 @@ import { FormData, LCAResponse } from '../types';
 
 // Updated to use the new backend API endpoint
 export const generateLCAReport = async (formData: FormData): Promise<LCAResponse> => {
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+  const apiUrl = import.meta.env.VITE_API_URL || '/api';
   
   try {
-    const response = await fetch(`${apiUrl}/api/predict-lca`, {
+    const response = await fetch(`${apiUrl}/predict-lca`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
