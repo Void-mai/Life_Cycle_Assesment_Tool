@@ -82,6 +82,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onBack }) => {
             <MetricsCards 
               metrics={data.circularityMetrics} 
               environmentalImpacts={data.environmentalImpacts}
+              recycledContentAmount={data.recycledContentAmount || 0}
             />
           </div>
 

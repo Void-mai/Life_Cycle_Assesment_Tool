@@ -12,6 +12,7 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, isLoading }) => {
   const [formData, setFormData] = useState<FormData>({
     material: 'Aluminium',
     recycledContent: 'Both',
+    recycledContentPercentage: 50,
     totalMass: 100,
     energySource: 'Electricity',
     transportDistance: 500,
@@ -156,6 +157,44 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, isLoading }) => {
                         <option value="Both">Both</option>
                         <option value="Recycled">Recycled</option>
                       </select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="block text-sm font-semibold text-slate-200 mb-3">
+                      Recycled Content: {formData.recycledContentPercentage}%
+                    </label>
+                    <div className="space-y-3">
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={formData.recycledContentPercentage}
+                        onChange={(e) => updateFormData('recycledContentPercentage', parseInt(e.target.value))}
+                        className="w-full h-3 bg-slate-700/50 rounded-lg appearance-none cursor-pointer slider"
+                        style={{
+                          background: `linear-gradient(to right, #64748b 0%, #64748b ${formData.recycledContentPercentage}%, #1e293b ${formData.recycledContentPercentage}%, #1e293b 100%)`
+                        }}
+                      />
+                      <div className="flex justify-between text-xs text-slate-400">
+                        <span>0% (All Ore)</span>
+                        <span>50% (Mixed)</span>
+                        <span>100% (All Recycled)</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4 mt-4">
+                        <div className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/50">
+                          <div className="text-xs text-slate-400 mb-1">Ore Content</div>
+                          <div className="text-sm font-semibold text-slate-200">
+                            {((100 - formData.recycledContentPercentage) * formData.totalMass / 100).toFixed(1)} tons
+                          </div>
+                        </div>
+                        <div className="p-3 bg-slate-800/50 rounded-lg border border-slate-600/50">
+                          <div className="text-xs text-slate-400 mb-1">Recycled Content</div>
+                          <div className="text-sm font-semibold text-green-400">
+                            {(formData.recycledContentPercentage * formData.totalMass / 100).toFixed(1)} tons
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 

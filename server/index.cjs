@@ -184,6 +184,7 @@ function simulateAIModel(inputData) {
   return {
     material: inputData.material,
     scenario: `${inputData.recycledContent} Route ${inputData.material}`,
+    recycledContentAmount: (inputData.recycledContentPercentage * inputData.totalMass / 100),
     environmentalImpacts: {
       carbonFootprint: prediction.carbonFootprint,
       waterUsage: 0 // Removed as not in your model

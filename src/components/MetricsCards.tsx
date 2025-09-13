@@ -5,9 +5,10 @@ import { CircularityMetrics, EnvironmentalImpacts } from '../types';
 interface MetricsCardsProps {
   metrics: CircularityMetrics;
   environmentalImpacts: EnvironmentalImpacts;
+  recycledContentAmount: number;
 }
 
-const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics, environmentalImpacts }) => {
+const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics, environmentalImpacts, recycledContentAmount }) => {
   const cards = [
     {
       title: 'Circularity Score',
@@ -35,11 +36,20 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics, environmentalImpac
       color: 'purple',
       description: 'Material utilization effectiveness',
       gradient: 'from-purple-500 to-pink-400'
+    },
+    {
+      title: 'Recycled Content',
+      value: recycledContentAmount,
+      unit: 'tons',
+      icon: Recycle,
+      color: 'green',
+      description: 'Amount of recycled material used',
+      gradient: 'from-green-500 to-emerald-400'
     }
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {cards.map((card, index) => {
         const Icon = card.icon;
         return (

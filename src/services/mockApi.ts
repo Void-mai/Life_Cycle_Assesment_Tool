@@ -50,6 +50,7 @@ function generateMockLCAReport(formData: FormData): LCAResponse {
   return {
     material: formData.material,
     scenario: `${formData.recycledContent} Route ${formData.material}`,
+    recycledContentAmount: (formData.recycledContentPercentage * formData.totalMass / 100),
     environmentalImpacts: {
       carbonFootprint: mockPrediction.carbonFootprint,
       waterUsage: 0

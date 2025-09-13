@@ -1,6 +1,7 @@
 export interface FormData {
   material: string;
   recycledContent: string;
+  recycledContentPercentage: number;
   totalMass: number;
   energySource: string;
   transportDistance: number;
@@ -28,6 +29,7 @@ export interface FlowData {
 export interface LCAResponse {
   material: string;
   scenario: string;
+  recycledContentAmount?: number;
   environmentalImpacts: EnvironmentalImpacts;
   baselineImpacts: EnvironmentalImpacts;
   circularityMetrics: CircularityMetrics;
