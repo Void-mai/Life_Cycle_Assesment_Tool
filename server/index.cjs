@@ -285,49 +285,10 @@ function validateLCAData(data) {
   return { isValid: true };
 }
 
-// Updated API Endpoint with AI Recommendations
-app.post('/api/predict-lca', async (req, res) => {
-  try {
-    console.log('Received LCA prediction request:', req.body);
-
-    // Validate input data
-    const validation = validateLCAData(req.body);
-    if (!validation.isValid) {
-      return res.status(400).json({
-        error: 'Invalid input data',
-        message: validation.message
-      });
-    }
-
-    // Simulate processing delay (like AI model inference)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // Process data through enhanced AI model with recommendations
-    const result = simulateAIModel(req.body);
-
-    console.log('Generated LCA result with AI recommendations:', result);
-
-    // Return successful response
-    res.status(200).json({
-      success: true,
-      data: result,
-      timestamp: new Date().toISOString()
-    });
-
-  } catch (error) {
-    console.error('Error processing LCA prediction request:', error);
-    
-    res.status(500).json({
-      error: 'Internal server error',
-      message: 'Failed to process LCA prediction data'
-    });
-  }
-});
-
-// Keep backward compatibility with existing endpoint
+// Main API Endpoint with AI Recommendations
 app.post('/api/lca-report', async (req, res) => {
   try {
-    console.log('Received LCA report request (legacy endpoint):', req.body);
+    console.log('Received LCA report request:', req.body);
 
     // Validate input data
     const validation = validateLCAData(req.body);
@@ -393,7 +354,7 @@ app.use((req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 LCA Backend Server with AI Recommendations running on port ${PORT}`);
-  console.log(`📊 API endpoint: http://localhost:${PORT}/api/predict-lca`);
+  console.log(`📊 API endpoint: http://localhost:${PORT}/api/lca-report`);
   console.log(`🤖 AI Recommendations: Enabled`);
   console.log(`❤️  Health check: http://localhost:${PORT}/api/health`);
 });
