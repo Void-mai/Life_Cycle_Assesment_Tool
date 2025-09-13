@@ -326,11 +326,41 @@ app.post('/api/predict-lca', async (req, res) => {
 
 // Keep backward compatibility with existing endpoint
 app.post('/api/lca-report', async (req, res) => {
-  // Redirect to new endpoint
-  return app._router.handle(req, res, () => {
-    req.url = '/api/predict-lca';
-    app._router.handle(req, res);
-  });
+  try {
+    console.log('Received LCA report request (legacy endpoint):', req.body);
+
+    // Validate input data
+    const validation = validateLCAData(req.body);
+    if (!validation.isValid) {
+      return res.status(400).json({
+        error: 'Invalid input data',
+        message: validation.message
+      });
+    }
+
+    // Simulate processing delay (like AI model inference)
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Process data through enhanced AI model with recommendations
+    const result = simulateAIModel(req.body);
+
+    console.log('Generated LCA result with AI recommendations:', result);
+
+    // Return successful response
+    res.status(200).json({
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('Error processing LCA report request:', error);
+    
+    res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to process LCA report data'
+    });
+  }
 });
 
 // Health check endpoint
@@ -353,6 +383,7 @@ app.use((err, req, res, next) => {
 
 // Handle 404
 app.use((req, res) => {
+  console.log('404 - Route not found:', req.method, req.url);
   res.status(404).json({
     error: 'Not found',
     message: 'The requested endpoint does not exist'

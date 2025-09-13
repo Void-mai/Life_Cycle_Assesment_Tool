@@ -5,7 +5,7 @@ export const generateLCAReport = async (formData: FormData): Promise<LCAResponse
   const apiUrl = import.meta.env.VITE_API_URL || '/api';
   
   try {
-    const response = await fetch(`${apiUrl}/predict-lca`, {
+    const response = await fetch(`${apiUrl}/lca-report`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
