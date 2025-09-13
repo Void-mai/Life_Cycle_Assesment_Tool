@@ -34,6 +34,6 @@ The project consists of a frontend and a backend, working together to deliver th
 3. AI Model: A pre-trained RandomForestRegressor model (SIH_predict.pkl) and a MinMaxScaler (predict_scaler.pkl) process the input data and generate predictions for the Carbon Footprint and Circularity Score.
 4. Result Delivery: The backend sends the final, human-readable predictions back to the frontend, where they are displayed on a dynamic dashboard.
 
-THE DIRECT TO THE HOST WEBSITE IS GIVEN BELOW:-
+THE DIRECT LINK TO THE HOST WEBSITE IS GIVEN BELOW:-
 
 https://complete-lca-platfor-6l8s.bolt.host/
