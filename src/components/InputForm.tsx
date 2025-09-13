@@ -152,9 +152,9 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, isLoading }) => {
                         onChange={(e) => updateFormData('recycledContent', e.target.value)}
                         className="w-full p-4 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur-sm"
                       >
-                        <option value="Ore">Virgin Material (Ore)</option>
-                        <option value="Both">Mixed (Ore + Recycled)</option>
-                        <option value="Recycled">Recycled Material</option>
+                        <option value="Ore">Ore</option>
+                        <option value="Both">Both</option>
+                        <option value="Recycled">Recycled</option>
                       </select>
                     </div>
                   </div>
@@ -193,9 +193,9 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, isLoading }) => {
                         onChange={(e) => updateFormData('energySource', e.target.value)}
                         className="w-full p-4 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 backdrop-blur-sm"
                       >
-                        <option value="Electricity">Clean Electricity</option>
-                        <option value="Coal">Coal Power</option>
-                        <option value="Both">Mixed Energy</option>
+                        <option value="Electricity">Electricity</option>
+                        <option value="Coal">Coal</option>
+                        <option value="Both">Both</option>
                       </select>
                     </div>
 

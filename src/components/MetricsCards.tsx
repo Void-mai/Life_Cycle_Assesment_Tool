@@ -35,20 +35,11 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics, environmentalImpac
       color: 'purple',
       description: 'Material utilization effectiveness',
       gradient: 'from-purple-500 to-pink-400'
-    },
-    {
-      title: 'Recycled Content',
-      value: metrics.recycledContentRate,
-      unit: '%',
-      icon: Award,
-      color: 'orange',
-      description: 'Percentage of recycled materials',
-      gradient: 'from-orange-500 to-yellow-400'
     }
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {cards.map((card, index) => {
         const Icon = card.icon;
         return (
