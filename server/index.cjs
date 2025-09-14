@@ -1,9 +1,36 @@
 const express = require('express');
 const cors = require('cors');
+const MLService = require('./mlService');
 require('dotenv').config();
 
+// Initialize ML Service
+const mlService = new MLService();
+
 // Enhanced ML Model Simulation with AI Recommendations
-function predictWithModel(inputData) {
+async function predictWithModel(inputData) {
+  // Try to use the real ML model first
+  const isModelAvailable = await mlService.isModelAvailable();
+  
+  if (isModelAvailable) {
+    try {
+      console.log('Using trained ML model for prediction');
+      const prediction = await mlService.predict(inputData);
+      return {
+        carbonFootprint: prediction.carbonFootprint,
+        circularityScore: prediction.circularityScore
+      };
+    } catch (error) {
+      console.error('ML model prediction failed, falling back to simulation:', error);
+    }
+  } else {
+    console.log('ML model files not found, using simulation');
+  }
+  
+  // Fallback to simulation if ML model is not available or fails
+  return predictWithSimulation(inputData);
+}
+
+function predictWithSimulation(inputData) {
   const {
     material,
     recycledContent,
@@ -91,13 +118,13 @@ function predictWithModel(inputData) {
 }
 
 // AI Recommendations Generator
-function generateAIRecommendations(originalData, originalPrediction) {
+async function generateAIRecommendations(originalData, originalPrediction) {
   const recommendations = [];
   
   // Scenario 1: Switch to Recycled Route
   if (originalData.recycledContent !== 'Recycled') {
     const scenario1 = { ...originalData, recycledContent: 'Recycled' };
-    const prediction1 = predictWithModel(scenario1);
+    const prediction1 = await predictWithModel(scenario1);
     
     if (prediction1.carbonFootprint < originalPrediction.carbonFootprint) {
       const saving = ((originalPrediction.carbonFootprint - prediction1.carbonFootprint) / originalPrediction.carbonFootprint) * 100;
@@ -113,7 +140,7 @@ function generateAIRecommendations(originalData, originalPrediction) {
   // Scenario 2: Switch to Electricity
   if (originalData.energySource !== 'Electricity') {
     const scenario2 = { ...originalData, energySource: 'Electricity' };
-    const prediction2 = predictWithModel(scenario2);
+    const prediction2 = await predictWithModel(scenario2);
     
     if (prediction2.carbonFootprint < originalPrediction.carbonFootprint) {
       const saving = ((originalPrediction.carbonFootprint - prediction2.carbonFootprint) / originalPrediction.carbonFootprint) * 100;
@@ -128,7 +155,7 @@ function generateAIRecommendations(originalData, originalPrediction) {
   
   // Scenario 3: Reduce Transport Distance by 50%
   const scenario3 = { ...originalData, transportDistance: originalData.transportDistance * 0.5 };
-  const prediction3 = predictWithModel(scenario3);
+  const prediction3 = await predictWithModel(scenario3);
   
   if (prediction3.carbonFootprint < originalPrediction.carbonFootprint) {
     const saving = ((originalPrediction.carbonFootprint - prediction3.carbonFootprint) / originalPrediction.carbonFootprint) * 100;
@@ -149,15 +176,15 @@ function generateAIRecommendations(originalData, originalPrediction) {
   return recommendations;
 }
 
-function generateBaseline(inputData) {
+async function generateBaseline(inputData) {
   const baselineInput = {
     ...inputData,
     recycledContent: 'Ore',
     energySource: 'Coal'
   };
   
-  const baseline = predictWithModel(baselineInput);
-  const current = predictWithModel(inputData);
+  const baseline = await predictWithModel(baselineInput);
+  const current = await predictWithModel(inputData);
   
   return {
     carbonFootprint: Math.max(baseline.carbonFootprint, current.carbonFootprint * 1.2),
@@ -173,13 +200,13 @@ app.use(cors());
 app.use(express.json());
 
 // Enhanced AI Model Function with Recommendations
-function simulateAIModel(inputData) {
+async function simulateAIModel(inputData) {
   // Get primary prediction
-  const prediction = predictWithModel(inputData);
-  const baseline = generateBaseline(inputData);
+  const prediction = await predictWithModel(inputData);
+  const baseline = await generateBaseline(inputData);
   
   // Generate AI recommendations based on scenario analysis
-  const aiRecommendations = generateAIRecommendations(inputData, prediction);
+  const aiRecommendations = await generateAIRecommendations(inputData, prediction);
 
   return {
     material: inputData.material,
@@ -304,7 +331,7 @@ app.post('/api/lca-report', async (req, res) => {
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     // Process data through enhanced AI model with recommendations
-    const result = simulateAIModel(req.body);
+    const result = await simulateAIModel(req.body);
 
     console.log('Generated LCA result with AI recommendations:', result);
 
@@ -354,10 +381,20 @@ app.use((req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 LCA Backend Server with AI Recommendations running on port ${PORT}`);
+  console.log(`🚀 LCA Backend Server with Real ML Model running on port ${PORT}`);
   console.log(`📊 API endpoint: http://localhost:${PORT}/api/lca-report`);
-  console.log(`🤖 AI Recommendations: Enabled`);
+  console.log(`🤖 ML Model Integration: Enabled`);
   console.log(`❤️  Health check: http://localhost:${PORT}/api/health`);
+  
+  // Check if ML models are available
+  mlService.isModelAvailable().then(available => {
+    if (available) {
+      console.log(`✅ Trained ML models detected and ready`);
+    } else {
+      console.log(`⚠️  ML model files not found, using simulation fallback`);
+      console.log(`   Place SIH_predict.pkl and predict_scaler.pkl in ml_models/ directory`);
+    }
+  });
 });
 
 module.exports = app;
