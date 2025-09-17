@@ -1,9 +1,9 @@
-Life_Cycle_Assesment_Tool
+# Life_Cycle_Assesment_Tool
 
 This project is an AI-powered platform designed to help engineers, metallurgists, and manufacturers easily assess and improve the sustainability of their processes. By bridging the gap between traditional industry practices and the principles of a circular economy, our tool provides instant, data-driven insights to promote resource efficiency, reduce waste, and lower carbon footprints.
 
-The Problem:
-The metals industry has historically operated on a linear "take-make-dispose" model, which leads to significant environmental and economic challenges:
+## The Problem:
+### The metals industry has historically operated on a linear "take-make-dispose" model, which leads to significant environmental and economic challenges:
 
 1. Resource Depletion: High reliance on mining depletes finite natural resources.
 2. High Environmental Impact: Manufacturing from virgin materials is energy-intensive, generating substantial greenhouse gas emissions and pollution.
@@ -11,7 +11,7 @@ The metals industry has historically operated on a linear "take-make-dispose" mo
 
 Our project addresses this problem head-on by providing an accessible and actionable solution.
 
-Our Solution:
+## Our Solution:
 Our solution is a simple, intuitive web application that uses a machine learning model to democratize LCA. The platform takes a few key user inputs and instantly provides quantifiable sustainability metrics, making it easy to compare different manufacturing scenarios.
 
 The tool’s core functionality includes:
@@ -34,6 +34,6 @@ The project consists of a frontend and a backend, working together to deliver th
 3. AI Model: A pre-trained RandomForestRegressor model (SIH_predict.pkl) and a MinMaxScaler (predict_scaler.pkl) process the input data and generate predictions for the Carbon Footprint and Circularity Score.
 4. Result Delivery: The backend sends the final, human-readable predictions back to the frontend, where they are displayed on a dynamic dashboard.
 
-THE DIRECT LINK TO THE HOST WEBSITE IS GIVEN BELOW:-
+## THE DIRECT LINK TO THE HOST WEBSITE IS GIVEN BELOW:-
 
-https://complete-lca-platfor-6l8s.bolt.host/
+#### https://complete-lca-platfor-6l8s.bolt.host/
