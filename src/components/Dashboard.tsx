@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Download, Share2, AlertCircle, TrendingUp, Award, Zap } from 'lucide-react';
 import { LCAResponse } from '../types';
+import { PDFExportService } from '../services/pdfExport';
 import MetricsCards from './MetricsCards';
 import BarChart from './charts/BarChart';
 
@@ -13,6 +14,15 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onBack }) => {
   const impactReduction = data.baselineImpacts.carbonFootprint > 0 
     ? ((data.baselineImpacts.carbonFootprint - data.environmentalImpacts.carbonFootprint) / data.baselineImpacts.carbonFootprint * 100)
     : 0;
+
+  const handleExportPDF = async () => {
+    try {
+      const pdfService = new PDFExportService();
+      await pdfService.generateDetailedReport(data);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 relative overflow-hidden">
@@ -66,7 +76,10 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onBack }) => {
             </div>
             
             <div className="flex space-x-4">
-              <button className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-xl hover:from-blue-600 hover:to-cyan-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
+              <button 
+                onClick={handleExportPDF}
+                className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-xl hover:from-blue-600 hover:to-cyan-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
                 <Download className="w-5 h-5 mr-2" />
                 Export Report
               </button>
