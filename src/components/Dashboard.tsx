@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Download, Share2, AlertCircle, TrendingUp, Award, Zap } from 'lucide-react';
 import { LCAResponse } from '../types';
+import { PDFExportService } from '../services/pdfExport';
 import MetricsCards from './MetricsCards';
 import BarChart from './charts/BarChart';
 
@@ -13,6 +14,15 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onBack }) => {
   const impactReduction = data.baselineImpacts.carbonFootprint > 0 
     ? ((data.baselineImpacts.carbonFootprint - data.environmentalImpacts.carbonFootprint) / data.baselineImpacts.carbonFootprint * 100)
     : 0;
+
+  const handleExportPDF = async () => {
+    try {
+      const pdfService = new PDFExportService();
+      await pdfService.generateDetailedReport(data);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 relative overflow-hidden">
