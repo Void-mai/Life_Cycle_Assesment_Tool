@@ -243,11 +243,45 @@ function getRecycledContentRate(recycledContent) {
 function calculateResourceEfficiency(inputData) {
   const { recycledContent, transportDistance } = inputData;
   
-  const baseEfficiency = 0.6;
-  const recyclingBonus = (getRecycledContentRate(recycledContent) / 100) * 0.3;
-  const transportPenalty = transportDistance > 1000 ? -0.05 : 0;
+  // Start with a lower base efficiency for more realistic calculations
+  let efficiency = 0.3; // Base efficiency for worst-case scenario
+  
+  // Major boost for recycled content
+  const recycledRate = getRecycledContentRate(recycledContent);
+  if (recycledRate >= 90) {
+    efficiency += 0.5; // High recycled content: +50%
+  } else if (recycledRate >= 50) {
+    efficiency += 0.25; // Mixed content: +25%
+  } else if (recycledRate > 0) {
+    efficiency += 0.1; // Some recycled content: +10%
+  }
+  // No bonus for 0% recycled content (ore route)
+  
+  // Energy source impact
+  if (energySource === 'Electricity') {
+    efficiency += 0.15; // Clean energy bonus
+  } else if (energySource === 'Both') {
+    efficiency += 0.05; // Mixed energy small bonus
+  }
+  // Coal gets no bonus (worst case)
+  
+  // Transport distance penalties (more severe)
+  if (transportDistance > 1000) {
+    efficiency -= 0.15; // Long distance major penalty
+  } else if (transportDistance > 600) {
+    efficiency -= 0.1; // Medium distance penalty
+  } else if (transportDistance > 300) {
+    efficiency -= 0.05; // Short distance small penalty
+  }
+  
+  // Additional penalty for high amounts with inefficient processes
+  const totalMass = inputData.totalMass || 0;
+  if (totalMass > 200 && recycledRate === 0 && energySource === 'Coal') {
+    efficiency -= 0.1; // Large scale inefficient operation penalty
+  }
 
-  return Math.min(1.0, baseEfficiency + recyclingBonus + transportPenalty);
+  // Ensure efficiency stays within realistic bounds
+  return Math.max(0.05, Math.min(0.95, efficiency));
 }
 
 function generateFlowData(inputData) {
