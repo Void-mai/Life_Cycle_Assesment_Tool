@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const MLService = require('./mlService');
+const MLService = require('./mlService.cjs');
 require('dotenv').config();
 
 // Initialize ML Service
