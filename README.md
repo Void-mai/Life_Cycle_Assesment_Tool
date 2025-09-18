@@ -6,6 +6,7 @@
 
 [Visit Our Platform ▶️](https://complete-lca-platfor-6l8s.bolt.host/)
 
+[New Link 🦉](https://void-mai-life-cycle-q59j.bolt.host/)
 ***
 
 ## 🚩 **The Sustainability Challenge in Metals**
