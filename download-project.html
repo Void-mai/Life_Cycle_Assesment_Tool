@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download LCA Platform Project</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .download-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 20px 40px;
+            background: linear-gradient(45deg, #4f46e5, #7c3aed);
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 4px solid #10b981;
+        }
+        .file-list {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        .instructions h3 {
+            color: #fbbf24;
+            margin-bottom: 15px;
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .tech-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .warning {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .warning h4 {
+            color: #fca5a5;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 LCA Platform Project</h1>
+        
+        <div class="info">
+            <h3>📦 Project Archive Ready</h3>
+            <p>Your complete LCA Platform project has been packaged and is ready for download. This includes all source code, configuration files, and documentation.</p>
+        </div>
+
+        <a href="/lca-platform-project.tar.gz" class="download-btn" download="lca-platform-project.tar.gz">
+            📥 Download Project Archive
+        </a>
+
+        <div class="tech-stack">
+            <div class="tech-item">
+                <strong>Frontend</strong><br>
+                React + TypeScript + Vite
+            </div>
+            <div class="tech-item">
+                <strong>Backend</strong><br>
+                Node.js + Express
+            </div>
+            <div class="tech-item">
+                <strong>Styling</strong><br>
+                Tailwind CSS
+            </div>
+            <div class="tech-item">
+                <strong>AI/ML</strong><br>
+                Python Integration
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>🚀 Setup Instructions</h3>
+            <ol>
+                <li><strong>Extract the archive:</strong> Unzip the downloaded file to your desired location</li>
+                <li><strong>Install dependencies:</strong> Run <code>npm install</code> in the project directory</li>
+                <li><strong>Start development:</strong> Use <code>npm run dev:full</code> to run both frontend and backend</li>
+                <li><strong>Access the app:</strong> Open <code>http://localhost:5173</code> in your browser</li>
+                <li><strong>ML Models (Optional):</strong> Place your trained models in the <code>ml_models/</code> directory</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <h4>⚠️ Important Notes</h4>
+            <ul>
+                <li>The <code>node_modules</code> folder is excluded from the archive to reduce size</li>
+                <li>Run <code>npm install</code> after extraction to install dependencies</li>
+                <li>The backend server runs on port 3001, frontend on port 5173</li>
+                <li>ML model files (.pkl) need to be added separately if you have them</li>
+            </ul>
+        </div>
+
+        <div class="file-list">
+            <strong>📁 Project Structure:</strong><br>
+            ├── src/<br>
+            │   ├── components/<br>
+            │   │   ├── Dashboard.tsx<br>
+            │   │   ├── InputForm.tsx<br>
+            │   │   ├── LoadingSpinner.tsx<br>
+            │   │   ├── MetricsCards.tsx<br>
+            │   │   └── charts/<br>
+            │   ├── pages/<br>
+            │   │   └── LandingPage.tsx<br>
+            │   ├── services/<br>
+            │   │   ├── mockApi.ts<br>
+            │   │   ├── mlModel.ts<br>
+            │   │   └── pdfExport.ts<br>
+            │   └── types/<br>
+            │       └── index.ts<br>
+            ├── server/<br>
+            │   ├── index.cjs<br>
+            │   └── mlService.cjs<br>
+            ├── ml_models/<br>
+            │   ├── predict.py<br>
+            │   └── README.md<br>
+            ├── package.json<br>
+            ├── vite.config.ts<br>
+            ├── tailwind.config.js<br>
+            ├── README.md<br>
+            └── CONTRIBUTING.md
+        </div>
+
+        <div class="info">
+            <h3>🎯 What's Included</h3>
+            <ul>
+                <li>Complete React frontend with TypeScript</li>
+                <li>Express.js backend with AI model integration</li>
+                <li>Tailwind CSS styling and responsive design</li>
+                <li>PDF export functionality</li>
+                <li>Machine learning model integration setup</li>
+                <li>Comprehensive documentation</li>
+                <li>Development and build configurations</li>
+                <li>All source code and configuration files</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h3>🔧 Development Commands</h3>
+            <ul>
+                <li><code>npm run dev</code> - Start frontend only</li>
+                <li><code>npm run dev:server</code> - Start backend only</li>
+                <li><code>npm run dev:full</code> - Start both frontend and backend</li>
+                <li><code>npm run build</code> - Build for production</li>
+                <li><code>npm run preview</code> - Preview production build</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

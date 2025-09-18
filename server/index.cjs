@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const MLService = require('./mlService');
+const MLService = require('./mlService.cjs');
 require('dotenv').config();
 
 // Initialize ML Service
@@ -258,9 +258,9 @@ function calculateResourceEfficiency(inputData) {
   // No bonus for 0% recycled content (ore route)
   
   // Energy source impact
-  if (energySource === 'Electricity') {
+  if (inputData.energySource === 'Electricity') {
     efficiency += 0.15; // Clean energy bonus
-  } else if (energySource === 'Both') {
+  } else if (inputData.energySource === 'Both') {
     efficiency += 0.05; // Mixed energy small bonus
   }
   // Coal gets no bonus (worst case)
@@ -276,7 +276,7 @@ function calculateResourceEfficiency(inputData) {
   
   // Additional penalty for high amounts with inefficient processes
   const totalMass = inputData.totalMass || 0;
-  if (totalMass > 200 && recycledRate === 0 && energySource === 'Coal') {
+  if (totalMass > 200 && recycledRate === 0 && inputData.energySource === 'Coal') {
     efficiency -= 0.1; // Large scale inefficient operation penalty
   }
 
