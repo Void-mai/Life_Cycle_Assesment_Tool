@@ -4,6 +4,7 @@ import { LCAResponse } from '../types';
 import { PDFExportService } from '../services/pdfExport';
 import MetricsCards from './MetricsCards';
 import BarChart from './charts/BarChart';
+import RouteComparisonCharts from './charts/RouteComparisonCharts';
 
 interface DashboardProps {
   data: LCAResponse;
@@ -105,6 +106,17 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onBack }) => {
               userImpacts={data.environmentalImpacts}
               baselineImpacts={data.baselineImpacts}
               scenario={data.scenario}
+            />
+          </div>
+
+          {/* Route Comparison Charts */}
+          <div className="mb-12">
+            <RouteComparisonCharts
+              currentRoute={data.scenario.split(' ')[0]}
+              material={data.material}
+              currentCarbonFootprint={data.environmentalImpacts.carbonFootprint}
+              currentCircularityScore={data.circularityMetrics.circularityScore}
+              currentResourceEfficiency={data.circularityMetrics.resourceEfficiency}
             />
           </div>
 
