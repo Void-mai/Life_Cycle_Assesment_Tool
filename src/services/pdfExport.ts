@@ -1,5 +1,4 @@
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { LCAResponse } from '../types';
 
 interface RecommendationScenario {
@@ -39,10 +38,6 @@ export class PDFExportService {
     // Current Configuration Analysis
     this.addNewPage();
     this.addCurrentConfigurationAnalysis(data);
-    
-    // Comparison Charts
-    this.addNewPage();
-    await this.addComparisonCharts(data, recommendations);
     
     // Detailed Metrics
     this.addNewPage();
@@ -94,12 +89,13 @@ export class PDFExportService {
     this.doc.text(`Carbon Footprint: ${data.environmentalImpacts.carbonFootprint.toFixed(2)} kg CO₂e`, 40, 150);
     this.doc.text(`Circularity Score: ${Math.round(data.circularityMetrics.circularityScore * 100)}/100`, 40, 160);
     this.doc.text(`Resource Efficiency: ${Math.round(data.circularityMetrics.resourceEfficiency * 100)}%`, 40, 170);
+    this.doc.text(`Recycled Content: ${data.recycledContentAmount?.toFixed(1) || 0} tons`, 40, 180);
     
     // Impact Reduction
     const impactReduction = ((data.baselineImpacts.carbonFootprint - data.environmentalImpacts.carbonFootprint) / data.baselineImpacts.carbonFootprint * 100);
     if (impactReduction > 0) {
       this.doc.setTextColor(16, 185, 129); // green-500
-      this.doc.text(`Environmental Impact Reduction: ${impactReduction.toFixed(1)}%`, 40, 180);
+      this.doc.text(`Environmental Impact Reduction: ${impactReduction.toFixed(1)}%`, 40, 190);
     }
     
     // Date and Footer
@@ -157,6 +153,7 @@ export class PDFExportService {
       ['Material Type', data.material, data.material === 'Aluminium' ? 'Higher energy intensity' : 'Moderate energy requirements'],
       ['Manufacturing Route', data.scenario.split(' ')[0], this.getRouteImpact(data.scenario.split(' ')[0])],
       ['Recycled Content', `${data.circularityMetrics.recycledContentRate}%`, this.getRecycledContentImpact(data.circularityMetrics.recycledContentRate)],
+      ['Recycled Amount', `${data.recycledContentAmount?.toFixed(1) || 0} tons`, 'Actual recycled material quantity'],
       ['Resource Efficiency', `${Math.round(data.circularityMetrics.resourceEfficiency * 100)}%`, this.getEfficiencyImpact(data.circularityMetrics.resourceEfficiency)],
     ];
     
@@ -174,86 +171,6 @@ export class PDFExportService {
     ];
     
     this.addTable(metricsData);
-  }
-
-  private async addComparisonCharts(data: LCAResponse, recommendations: RecommendationScenario[]): Promise<void> {
-    this.addSectionHeader('Performance Comparison Charts');
-    
-    // Create chart containers
-    const chartContainer = document.createElement('div');
-    chartContainer.style.width = '800px';
-    chartContainer.style.height = '400px';
-    chartContainer.style.backgroundColor = 'white';
-    chartContainer.style.padding = '20px';
-    document.body.appendChild(chartContainer);
-    
-    // Carbon Footprint Comparison Chart
-    const carbonChart = await this.createCarbonFootprintChart(data, recommendations, chartContainer);
-    const carbonCanvas = await html2canvas(carbonChart);
-    
-    this.doc.addImage(carbonCanvas.toDataURL('image/png'), 'PNG', this.margin, this.currentY, 170, 85);
-    this.currentY += 95;
-    
-    // Circularity Score Comparison Chart
-    const circularityChart = await this.createCircularityChart(data, recommendations, chartContainer);
-    const circularityCanvas = await html2canvas(circularityChart);
-    
-    if (this.currentY > this.pageHeight - 100) this.addNewPage();
-    this.doc.addImage(circularityCanvas.toDataURL('image/png'), 'PNG', this.margin, this.currentY, 170, 85);
-    this.currentY += 95;
-    
-    // Clean up
-    document.body.removeChild(chartContainer);
-  }
-
-  private async createCarbonFootprintChart(data: LCAResponse, recommendations: RecommendationScenario[], container: HTMLElement): Promise<HTMLElement> {
-    container.innerHTML = `
-      <div style="width: 100%; height: 100%; display: flex; flex-direction: column; font-family: Arial, sans-serif;">
-        <h3 style="text-align: center; margin-bottom: 20px; color: #1f2937;">Carbon Footprint Comparison (kg CO₂e)</h3>
-        <div style="display: flex; justify-content: space-around; align-items: end; height: 300px; border-bottom: 2px solid #374151; border-left: 2px solid #374151; padding: 20px;">
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <div style="width: 60px; height: ${(data.environmentalImpacts.carbonFootprint / Math.max(data.baselineImpacts.carbonFootprint, ...recommendations.map(r => r.carbonFootprint))) * 200}px; background: linear-gradient(to top, #3b82f6, #06b6d4); margin-bottom: 10px; border-radius: 4px;"></div>
-            <span style="font-size: 12px; text-align: center; color: #374151;">Current<br>${data.environmentalImpacts.carbonFootprint.toFixed(2)}</span>
-          </div>
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <div style="width: 60px; height: ${(data.baselineImpacts.carbonFootprint / Math.max(data.baselineImpacts.carbonFootprint, ...recommendations.map(r => r.carbonFootprint))) * 200}px; background: linear-gradient(to top, #6b7280, #9ca3af); margin-bottom: 10px; border-radius: 4px;"></div>
-            <span style="font-size: 12px; text-align: center; color: #374151;">Baseline<br>${data.baselineImpacts.carbonFootprint.toFixed(2)}</span>
-          </div>
-          ${recommendations.slice(0, 3).map(rec => `
-            <div style="display: flex; flex-direction: column; align-items: center;">
-              <div style="width: 60px; height: ${(rec.carbonFootprint / Math.max(data.baselineImpacts.carbonFootprint, ...recommendations.map(r => r.carbonFootprint))) * 200}px; background: linear-gradient(to top, #10b981, #34d399); margin-bottom: 10px; border-radius: 4px;"></div>
-              <span style="font-size: 12px; text-align: center; color: #374151;">${rec.name}<br>${rec.carbonFootprint.toFixed(2)}</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-    return container;
-  }
-
-  private async createCircularityChart(data: LCAResponse, recommendations: RecommendationScenario[], container: HTMLElement): Promise<HTMLElement> {
-    container.innerHTML = `
-      <div style="width: 100%; height: 100%; display: flex; flex-direction: column; font-family: Arial, sans-serif;">
-        <h3 style="text-align: center; margin-bottom: 20px; color: #1f2937;">Circularity Score Comparison</h3>
-        <div style="display: flex; justify-content: space-around; align-items: end; height: 300px; border-bottom: 2px solid #374151; border-left: 2px solid #374151; padding: 20px;">
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <div style="width: 60px; height: ${(data.circularityMetrics.circularityScore * 100 / 100) * 200}px; background: linear-gradient(to top, #3b82f6, #06b6d4); margin-bottom: 10px; border-radius: 4px;"></div>
-            <span style="font-size: 12px; text-align: center; color: #374151;">Current<br>${Math.round(data.circularityMetrics.circularityScore * 100)}/100</span>
-          </div>
-          <div style="display: flex; flex-direction: column; align-items: center;">
-            <div style="width: 60px; height: ${(10 / 100) * 200}px; background: linear-gradient(to top, #6b7280, #9ca3af); margin-bottom: 10px; border-radius: 4px;"></div>
-            <span style="font-size: 12px; text-align: center; color: #374151;">Baseline<br>10/100</span>
-          </div>
-          ${recommendations.slice(0, 3).map(rec => `
-            <div style="display: flex; flex-direction: column; align-items: center;">
-              <div style="width: 60px; height: ${(rec.circularityScore / 100) * 200}px; background: linear-gradient(to top, #10b981, #34d399); margin-bottom: 10px; border-radius: 4px;"></div>
-              <span style="font-size: 12px; text-align: center; color: #374151;">${rec.name}<br>${Math.round(rec.circularityScore)}/100</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-    return container;
   }
 
   private addDetailedMetrics(data: LCAResponse, recommendations: RecommendationScenario[]): void {
@@ -276,6 +193,10 @@ export class PDFExportService {
        `${Math.round(data.circularityMetrics.resourceEfficiency * 100)}%`, 
        'Up to 95%',
        `+${(95 - (data.circularityMetrics.resourceEfficiency * 100)).toFixed(1)}%`],
+      ['Recycled Content', 
+       `${data.recycledContentAmount?.toFixed(1) || 0} tons`, 
+       'Maximize recycled input',
+       'Increase recycled material usage'],
     ];
     
     this.addTable(comparisonData);

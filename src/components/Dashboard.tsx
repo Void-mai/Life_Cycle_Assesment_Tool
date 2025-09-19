@@ -77,6 +77,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onBack }) => {
             
             <div className="flex space-x-4">
               <button 
+                data-export-btn
                 onClick={handleExportPDF}
                 className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-xl hover:from-blue-600 hover:to-cyan-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
