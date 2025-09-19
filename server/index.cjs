@@ -1,10 +1,16 @@
 const express = require('express');
 const cors = require('cors');
-const MLService = require('./mlService.cjs');
+const path = require('path');
 require('dotenv').config();
 
-// Initialize ML Service
-const mlService = new MLService();
+// Try to initialize ML Service, but don't fail if it's not available
+let mlService = null;
+try {
+  const MLService = require('./mlService.cjs');
+  mlService = new MLService();
+} catch (error) {
+  console.log('ML Service not available, using simulation fallback');
+}
 
 // Enhanced ML Model Simulation with AI Recommendations
 async function predictWithModel(inputData) {
@@ -421,14 +427,18 @@ app.listen(PORT, () => {
   console.log(`❤️  Health check: http://localhost:${PORT}/api/health`);
   
   // Check if ML models are available
-  mlService.isModelAvailable().then(available => {
-    if (available) {
-      console.log(`✅ Trained ML models detected and ready`);
-    } else {
-      console.log(`⚠️  ML model files not found, using simulation fallback`);
-      console.log(`   Place SIH_predict.pkl and predict_scaler.pkl in ml_models/ directory`);
-    }
-  });
+  if (mlService) {
+    mlService.isModelAvailable().then(available => {
+      if (available) {
+        console.log(`✅ Trained ML models detected and ready`);
+      } else {
+        console.log(`⚠️  ML model files not found, using simulation fallback`);
+        console.log(`   Place SIH_predict.pkl and predict_scaler.pkl in ml_models/ directory`);
+      }
+    });
+  } else {
+    console.log(`⚠️  ML Service not available, using simulation fallback`);
+  }
 });
 
 module.exports = app;

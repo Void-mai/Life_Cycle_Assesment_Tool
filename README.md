@@ -4,9 +4,7 @@
 
 **Instant, Actionable Insights for Sustainable Metallurgy and Manufacturing**
 
-[Visit Our Platform ▶️](https://complete-lca-platfor-6l8s.bolt.host/)
-
-[New Link 🦉](https://void-mai-life-cycle-q59j.bolt.host/)
+> **Ready for Production Deployment** 🚀
 ***
 
 ## 🚩 **The Sustainability Challenge in Metals**
@@ -29,6 +27,45 @@ By **democratizing LCA** through a web platform that delivers instant feedback a
 
 ***
 
+## 🚀 **Quick Start**
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation & Setup
+
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd lca-platform
+
+# Install all dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env
+
+# Start the full application (frontend + backend)
+npm run dev:full
+
+# Or start components separately:
+npm run dev        # Frontend only (port 5173)
+npm run dev:server # Backend only (port 3001)
+```
+
+### Production Build
+
+```bash
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+***
+
 ## ⚙️ **How It Works (in 4 Steps)**
 
 1. **User-Friendly Web App:** Streamlined UI collects only essential details (Material, Manufacturing Route, Energy Source…).
@@ -45,6 +82,8 @@ By **democratizing LCA** through a web platform that delivers instant feedback a
 - **Scenario Comparison:** See how recycled vs. virgin inputs change your impact.
 - **Rich Visuals**: Dynamic charts capture sustainability outcomes and material flows.
 - **Clear Recommendations:** Actionable suggestions empower greener decisions.
+- **PDF Export**: Generate detailed reports for stakeholders.
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile.
 
 ***
 
@@ -53,15 +92,71 @@ By **democratizing LCA** through a web platform that delivers instant feedback a
 - See how using 90% recycled aluminum slashes your carbon impact vs. virgin metal.
 - Instantly compare different process routes (e.g., electric arc vs. blast furnace).
 - Prioritize sustainability in R\&D, sourcing, client proposals, or compliance.
+- Generate professional reports for sustainability audits.
+- Benchmark your processes against industry standards.
 
 ***
 
 ## 👩‍💻 **Technical Overview**
 
-- **Frontend:** Built for clarity, responsiveness, and minimal input hassle.
-- **Backend:** Python/Flask API connects input to models, handles preprocessing, and returns results.
+- **Frontend:** React + TypeScript + Vite for modern, fast development
+- **Backend:** Node.js + Express API with ML model integration
 - **ML Model:** RandomForestRegressor trained on rich LCA datasets for accuracy + robustness.
-- **Deployment:** Hosted and ready for industrial use, experimentation, or education.
+- **Styling:** Tailwind CSS for responsive, beautiful UI
+- **Charts:** Chart.js for interactive data visualization
+- **Export:** PDF generation with detailed analysis reports
+- **Deployment:** Production-ready with optimized builds
+
+***
+
+## 📁 **Project Structure**
+
+```
+lca-platform/
+├── src/                    # Frontend React application
+│   ├── components/         # Reusable UI components
+│   ├── pages/             # Page components
+│   ├── services/          # API and utility services
+│   └── types/             # TypeScript type definitions
+├── server/                # Backend Node.js server
+│   ├── index.cjs          # Main server file
+│   └── mlService.cjs      # ML model integration
+├── ml_models/             # Machine learning models (optional)
+├── public/                # Static assets
+└── dist/                  # Production build output
+```
+
+***
+
+## 🔧 **Available Scripts**
+
+- `npm run dev` - Start frontend development server
+- `npm run dev:server` - Start backend API server
+- `npm run dev:full` - Start both frontend and backend
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+***
+
+## 🌐 **Deployment Options**
+
+### Static Hosting (Frontend Only)
+- Netlify, Vercel, GitHub Pages
+- Run `npm run build` and deploy the `dist/` folder
+
+### Full-Stack Deployment
+- Railway, Render, DigitalOcean App Platform
+- Supports both frontend and backend with API
+
+### Docker Deployment
+```bash
+# Build Docker image
+docker build -t lca-platform .
+
+# Run container
+docker run -p 5173:5173 -p 3001:3001 lca-platform
+```
 
 ***
 
@@ -71,17 +166,28 @@ With sustainability mandates and circular economy goals accelerating worldwide, 
 
 ***
 
-## 🎯 **Try It Now!**
+## 🛠️ **Development & Contributing**
 
-👉 **[Live Demo](https://complete-lca-platfor-6l8s.bolt.host/)**
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Development Setup
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+### Adding ML Models
+Place your trained models in the `ml_models/` directory:
+- `SIH_predict.pkl` - Your trained model
+- `predict_scaler.pkl` - Your scaler
 
 ***
 
-## 🤝 **Contact \& Contributions**
+## 📄 **License**
 
-We welcome feedback, collaboration, and contributions from the community! Reach out via [Issues](#) or email the team.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ***
 
-**Built by passionate engineers, metallurgists, and AI enthusiasts for a greener tomorrow.**
 
