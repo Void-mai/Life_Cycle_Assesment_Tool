@@ -35,11 +35,61 @@ export const generateLCAReport = async (formData: FormData): Promise<LCAResponse
 
 // Fallback mock data generator
 function generateMockLCAReport(formData: FormData): LCAResponse {
+  // Use actual recycled content percentage for more accurate calculations
+  const actualRecycledPercentage = formData.recycledContentPercentage || getRecycledContentRate(formData.recycledContent);
+  const virginPercentage = 100 - actualRecycledPercentage;
+
+  // Base carbon footprint values
+  const baseVirginCoal = formData.material === 'Aluminium' ? 16.90 : 4.84;
+  const baseVirginElectricity = formData.material === 'Aluminium' ? 8.57 : 2.58;
+  const baseRecycledCoal = formData.material === 'Aluminium' ? 2.11 : 1.69;
+  const baseRecycledElectricity = formData.material === 'Aluminium' ? 0.89 : 0.74;
+
+  // Calculate weighted carbon footprint
+  let virginCarbonFootprint, recycledCarbonFootprint;
+  
+  if (formData.energySource === 'Electricity') {
+    virginCarbonFootprint = baseVirginElectricity;
+    recycledCarbonFootprint = baseRecycledElectricity;
+  } else if (formData.energySource === 'Coal') {
+    virginCarbonFootprint = baseVirginCoal;
+    recycledCarbonFootprint = baseRecycledCoal;
+  } else { // Both
+    virginCarbonFootprint = (baseVirginElectricity + baseVirginCoal) / 2;
+    recycledCarbonFootprint = (baseRecycledElectricity + baseRecycledCoal) / 2;
+  }
+
+  // Weighted average based on actual recycled content percentage
+  let carbonFootprint = (virginPercentage / 100) * virginCarbonFootprint + 
+                       (actualRecycledPercentage / 100) * recycledCarbonFootprint;
+
+  // Add transport impact
+  carbonFootprint += formData.transportDistance * 0.0002;
+
+  // Calculate circularity score
+  let circularityScore = 10; // Base score
+  circularityScore += (actualRecycledPercentage / 100) * 75; // Up to 75 points for 100% recycled
+  
+  if (formData.energySource === 'Electricity') {
+    circularityScore += 10;
+  } else if (formData.energySource === 'Both') {
+    circularityScore += 5;
+  }
+  
+  // Transport penalties
+  if (formData.transportDistance > 1000) {
+    circularityScore -= 5;
+  } else if (formData.transportDistance > 600) {
+    circularityScore -= 3;
+  }
+
+  // Ensure bounds
+  carbonFootprint = Math.max(0.5, Math.min(20, carbonFootprint));
+  circularityScore = Math.max(5, Math.min(95, circularityScore));
+
   const mockPrediction = {
-    carbonFootprint: formData.recycledContent === 'Recycled' ? 1.2 : 
-                    formData.recycledContent === 'Both' ? 5.5 : 12.8,
-    circularityScore: formData.recycledContent === 'Recycled' ? 85 : 
-                     formData.recycledContent === 'Both' ? 50 : 15
+    carbonFootprint: Math.round(carbonFootprint * 100) / 100,
+    circularityScore: Math.round(circularityScore)
   };
   
   const baseline = {
@@ -80,19 +130,14 @@ function getRecycledContentRate(recycledContent: string): number {
 }
 
 function calculateResourceEfficiency(formData: FormData): number {
-  // Start with a lower base efficiency for more realistic calculations
-  let efficiency = 0.3; // Base efficiency for worst-case scenario
+  // Use actual recycled content percentage
+  const actualRecycledPercentage = formData.recycledContentPercentage || getRecycledContentRate(formData.recycledContent);
   
-  // Major boost for recycled content
-  const recycledRate = getRecycledContentRate(formData.recycledContent);
-  if (recycledRate >= 90) {
-    efficiency += 0.5; // High recycled content: +50%
-  } else if (recycledRate >= 50) {
-    efficiency += 0.25; // Mixed content: +25%
-  } else if (recycledRate > 0) {
-    efficiency += 0.1; // Some recycled content: +10%
-  }
-  // No bonus for 0% recycled content (ore route)
+  // Start with base efficiency
+  let efficiency = 0.15; // Base efficiency for worst-case scenario
+  
+  // Linear relationship with recycled content (major factor)
+  efficiency += (actualRecycledPercentage / 100) * 0.6; // Up to 60% boost for 100% recycled
   
   // Energy source impact
   if (formData.energySource === 'Electricity') {
@@ -102,7 +147,7 @@ function calculateResourceEfficiency(formData: FormData): number {
   }
   // Coal gets no bonus (worst case)
   
-  // Transport distance penalties (more severe)
+  // Transport distance penalties
   if (formData.transportDistance > 1000) {
     efficiency -= 0.15; // Long distance major penalty
   } else if (formData.transportDistance > 600) {
@@ -112,12 +157,12 @@ function calculateResourceEfficiency(formData: FormData): number {
   }
   
   // Additional penalty for high amounts with inefficient processes
-  if (formData.totalMass > 200 && recycledRate === 0 && formData.energySource === 'Coal') {
+  if (formData.totalMass > 200 && actualRecycledPercentage === 0 && formData.energySource === 'Coal') {
     efficiency -= 0.1; // Large scale inefficient operation penalty
   }
 
-  // Ensure efficiency stays within realistic bounds
-  return Math.max(0.05, Math.min(0.95, efficiency));
+  // Ensure efficiency stays within realistic bounds  
+  return Math.max(0.15, Math.min(0.90, efficiency));
 }
 
 function generateFlowData(formData: FormData): any[] {
