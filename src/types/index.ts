@@ -35,4 +35,5 @@ export interface LCAResponse {
   circularityMetrics: CircularityMetrics;
   flowData: FlowData[];
   recommendations: string[];
+  formData?: FormData;
 }

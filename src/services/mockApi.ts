@@ -116,7 +116,8 @@ function generateMockLCAReport(formData: FormData): LCAResponse {
       extendedProductLife: `${Math.round(3 + (mockPrediction.circularityScore / 100 * 5))} years`
     },
     flowData: generateFlowData(formData),
-    recommendations: generateMockRecommendations(formData)
+    recommendations: generateMockRecommendations(formData),
+    formData: formData
   };
 }
 

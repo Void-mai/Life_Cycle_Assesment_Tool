@@ -1,14 +1,21 @@
 import React from 'react';
-import { EnvironmentalImpacts } from '../../types';
+import { EnvironmentalImpacts, FormData } from '../../types';
 import { TrendingDown, TrendingUp } from 'lucide-react';
 
 interface BarChartProps {
   userImpacts: EnvironmentalImpacts;
   baselineImpacts: EnvironmentalImpacts;
   scenario: string;
+  formData?: FormData;
 }
 
-const BarChart: React.FC<BarChartProps> = ({ userImpacts, baselineImpacts, scenario }) => {
+const BarChart: React.FC<BarChartProps> = ({ userImpacts, baselineImpacts, scenario, formData }) => {
+  const isOreRouteWithCoal = formData &&
+    formData.recycledContent === 'Ore' &&
+    formData.recycledContentPercentage < 20 &&
+    formData.energySource === 'Coal';
+
+  const material = formData?.material || 'Material';
   const data = [
     {
       category: 'Carbon Footprint',
@@ -22,12 +29,17 @@ const BarChart: React.FC<BarChartProps> = ({ userImpacts, baselineImpacts, scena
   const maxValue = Math.max(...data.flatMap(d => [d.user, d.baseline]));
   const impactReduction = ((baselineImpacts.carbonFootprint - userImpacts.carbonFootprint) / baselineImpacts.carbonFootprint * 100);
 
+  const userLabel = isOreRouteWithCoal ? `Ore Route ${material}` : scenario;
+  const comparisonText = isOreRouteWithCoal
+    ? `Ore route with coal vs. conventional baseline`
+    : 'Your configuration vs. conventional baseline';
+
   return (
     <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h3 className="text-2xl font-bold text-white mb-2">Environmental Impact Comparison</h3>
-          <p className="text-slate-300">Your configuration vs. conventional baseline</p>
+          <p className="text-slate-300">{comparisonText}</p>
         </div>
         {impactReduction > 0 && (
           <div className="flex items-center space-x-2 px-4 py-2 bg-green-500/20 rounded-full border border-green-500/30">
@@ -54,7 +66,7 @@ const BarChart: React.FC<BarChartProps> = ({ userImpacts, baselineImpacts, scena
                 {/* User Scenario Bar */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-slate-300">{scenario}</span>
+                    <span className="text-sm font-medium text-slate-300">{userLabel}</span>
                     <span className="text-sm font-bold text-blue-400">
                       {item.user.toFixed(2)} {item.unit}
                     </span>

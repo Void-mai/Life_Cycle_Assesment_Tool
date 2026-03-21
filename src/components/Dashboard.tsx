@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Download, Share2, AlertCircle, TrendingUp, Award, Zap } from 'lucide-react';
+import { ArrowLeft, Download, Share2, CircleAlert as AlertCircle, TrendingUp, Award, Zap } from 'lucide-react';
 import { LCAResponse } from '../types';
 import { PDFExportService } from '../services/pdfExport';
 import MetricsCards from './MetricsCards';
@@ -106,6 +106,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onBack }) => {
               userImpacts={data.environmentalImpacts}
               baselineImpacts={data.baselineImpacts}
               scenario={data.scenario}
+              formData={data.formData}
             />
           </div>
 

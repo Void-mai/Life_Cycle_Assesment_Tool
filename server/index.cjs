@@ -225,7 +225,8 @@ async function simulateAIModel(inputData) {
       extendedProductLife: `${Math.round(3 + (prediction.circularityScore / 100 * 5))} years`
     },
     flowData: generateFlowData(inputData),
-    recommendations: aiRecommendations // Use AI-generated recommendations
+    recommendations: aiRecommendations, // Use AI-generated recommendations
+    formData: inputData // Include formData in response
   };
 }
 
